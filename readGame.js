@@ -122,8 +122,8 @@ function actualizaDatos(datos){
     
     var a, b, y, x, up, down, left, right, start, select, l, r; //Booleanas, indican si el boton se pulsa o no
     var mbyetUDLR = datos[4]; //Dirección 0x7E0015 -> 7E0DA2
-    var lbyetUDLR = datos[4]; //Dirección 0x7E0015 -> 7E0DA4
-    var nbyetUDLR = datos[4]; //Dirección 0x7E0016 
+    var lbyetUDLR = datos[5]; //Dirección 0x7E0015 -> 7E0DA3
+    var nbyetUDLR = datos[4]; //Dirección 0x7E0016 -> 7E0DA6
     var axlr = datos[2]; //Direccion 0x7E0017
     var naxlr = datos[3]; //Direccion 0x7E0018
     
@@ -205,7 +205,7 @@ function actualizaDatos(datos){
 }
 
 function empezarALeer(){
-    intervaloLectura = setInterval(leer, 17);
+    intervaloLectura = setInterval(leer, 32);
 }
 
 /**
