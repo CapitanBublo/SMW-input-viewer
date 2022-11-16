@@ -3,10 +3,37 @@
     <head>
         Hola
     </head>
-    <br>
-    <button onclick="startTracker()">Iniciar</button> <button onclick="stopTracker()">Detener</button>
-    <br>
-    <div id="conectionStatus">Desconectado</div>
-    <br>
-    <div id="debug">Desconectado</div>
+        <br>
+        <button onclick="startTracker()">Iniciar</button> <button onclick="stopTracker()">Detener</button>
+        <br>
+        <div id="conectionStatus">Desconectado</div>
+        <br>
+        <div  class="container" style="background-color: gray;">
+            <!-- img src="./images/back.png"/ -->
+            <div id="Cont" class="row justify-content-between">
+                <div id="Triggers" class="row justify-content-between">
+                        <img id="l" src="./images/l.png" width="250" />
+                        <img id="r" src="./images/r.png" width="250"/>
+                </div>     
+                <div id="ux" class="row justify-content-between">
+                    <img id="up" src="./images/dpad-up.png" />  
+                    <img id="x" src="./images/x.png"   />
+                </div>    
+                <div id="lrya" class="row justify-content-center">
+                    <img id="left" src="./images/dpad-left.png" />
+                    <img id="right" src="./images/dpad-right.png" />
+                    <img id="y" src="./images/y.png"  />
+                    <img id="a" src="./images/a.png" />       
+                </div>        
+                <div id="dssb" class="row justify-content-center">               
+                    <img id="down" src="./images/dpad-down.png"  />                       
+                    <img id="start" src="./images/start.png" />
+                    <img id="select" src="./images/select.png"  />    
+                    <img id="b" src="./images/b.png"  />
+                </div>
+            </div>
+        </div>
+        <div id="debug">
+            Desconectado
+        </div>
 </html>

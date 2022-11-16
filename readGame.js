@@ -108,72 +108,104 @@ var datos = new Uint8Array();
 
 function leer(){  //Así que encapsulo socket.send en otra función, y con esto si que puedo leer la respuesta??? No entiendo JS
     leerMemoria(INICIO_MEMORIAS + 0x15, 0x04, function(event){ //Shoutouts a Stack Overflow
-        var datos = new Uint8Array(event.data);
+        leerMemoria(INICIO_MEMORIAS + 0xDA2, 0x06, function(event2){
+        var datos = new Uint8Array([...new Uint8Array(event.data), ...new Uint8Array(event2.data)]);
         actualizaDatos(datos);
+        });
     });
 }
 
 
 function actualizaDatos(datos){
+    
+    // document.getElementById("debug").innerHTML +=  (" | " + datos[4] + " " + datos[6] + " " + datos[8]+ " " + datos[9] );
+    
     var a, b, y, x, up, down, left, right, start, select, l, r; //Booleanas, indican si el boton se pulsa o no
-    var byetUDLR = datos[0]; //Dirección 0x7E0015
+    var mbyetUDLR = datos[4]; //Dirección 0x7E0015 -> 7E0DA2
+    var lbyetUDLR = datos[5]; //Dirección 0x7E0015 -> 7E0DA3
+    var nbyetUDLR = datos[4]; //Dirección 0x7E0016 -> 7E0DA6
     var axlr = datos[2]; //Direccion 0x7E0017
+    var naxlr = datos[3]; //Direccion 0x7E0018
     
     //Operaciones bitwise entre las direcciones de memoria y sus posibles valores
     //Asi se comprueba cada boton por separado
-    if((byetUDLR & 0x1) == 0x1){
+    if(((mbyetUDLR & 0x1) == 0x1) || ((lbyetUDLR & 0x1) == 0x1) || ((nbyetUDLR & 0x1) == 0x1)){
         right = true;
     }
     else{
         right = false;
     }
-    if((byetUDLR & 0x2) == 0x2){
+    if(((mbyetUDLR & 0x2) == 0x2) || ((lbyetUDLR &  0x2) == 0x2) || ((nbyetUDLR & 0x2) == 0x2) ){
         left = true;
     }
     else{
         left = false;
     }
-    if((byetUDLR & 0x4) == 0x4){
+    if(((mbyetUDLR & 0x4) == 0x4) || ((lbyetUDLR & 0x4) == 0x4)|| ((nbyetUDLR & 0x4) == 0x4)){
         down = true;
     }
     else{
         down = false;
     }
-    if((byetUDLR & 0x8) == 0x8){
+    if(((mbyetUDLR & 0x8) == 0x8) || ((lbyetUDLR & 0x8) == 0x8) || ((nbyetUDLR & 0x8) == 0x8)){
         up = true;
     }
     else{
         up = false;
     }
-    if((byetUDLR & 0x10) == 0x10){
+    if(((mbyetUDLR & 0x10) == 0x10) || ((lbyetUDLR & 0x10) == 0x10)|| ((nbyetUDLR & 0x10) == 0x10) ){
         start = true;
     }
     else{
         start = false;
     }
-    if((byetUDLR & 0x20) == 0x20){
+    if(((mbyetUDLR & 0x20) == 0x20) || ((lbyetUDLR & 0x20) == 0x20) || ((nbyetUDLR & 0x20) == 0x20)){
         select = true;
     }
     else{
         select = false
     }
-    if((axlr & 0x10) == 0x10){
+    if(((axlr & 0x10) == 0x10) || ((naxlr & 0x10) == 0x10)){
         r = true;
     }
     else{
         r = false;
     }
-    if((axlr & 0x20) == 0x20){
+    if(((axlr & 0x20) == 0x20) || ((naxlr & 0x20) == 0x20)){
         l = true;
     }
     else{
         l = false;
     }
+    if(((axlr & 0x80) == 0x80) || ((naxlr & 0x80) == 0x80)){
+        a = true;
+    }
+    else{
+        a = false;
+    }
+    if(((mbyetUDLR & 0x80)==0x80) || ((lbyetUDLR & 0x80)==0x80) || (nbyetUDLR & 0x80)==0x80){
+        b = true;
+        }
+    else{ 
+        b= false;
+    }
+    if(((axlr & 0x40) == 0x40) || ((naxlr & 0x40) == 0x40)){
+        x = true;
+    }
+    else{
+        x = false;
+    }
+    if(((mbyetUDLR &  0x40)==0x40) || ((lbyetUDLR &  0x40)==0x40) || (nbyetUDLR & 0x40)==0x40){
+        y = true;
+        }
+    else{ 
+        y = false;
+    }
     setBotones(a, b, y, x, up, down, left, right, start, select, l, r);
 }
 
 function empezarALeer(){
-    intervaloLectura = setInterval(leer, 15);
+    intervaloLectura = setInterval(leer, 32);
 }
 
 /**
@@ -185,78 +217,78 @@ function empezarALeer(){
 function setBotones(a, b, y, x, up, down, left, right, start, select, l, r){
     let texto = "";
     if(a){
-        texto += "A - ";
+        document.getElementById("a").src = "./images/ap.png";
     }
     else{
-        texto += "No A - ";
+        document.getElementById("a").src = "./images/a.png";
     }
     if(b){
-        texto += "B - ";
+        document.getElementById("b").src = "./images/bp.png";
     }
     else{
-        texto += "No B - ";
+        document.getElementById("b").src = "./images/b.png";
     }
     if(y){
-        texto += "Y - ";
+        document.getElementById("y").src = "./images/yp.png";
     }
     else{
-        texto += "No Y - ";
+        document.getElementById("y").src = "./images/y.png";
     }
     if(x){
-        texto += "X - ";
+        document.getElementById("x").src = "./images/xp.png";
     }
     else{
-        texto += "No X - ";
+        document.getElementById("x").src = "./images/x.png";
     }
     if(r){
-        texto += "R - ";
+        document.getElementById("r").src = "./images/rp.png";
     }
     else{
-        texto += "No R - ";
+        document.getElementById("r").src = "./images/r.png";
     }
     if(l){
-        texto += "L - ";
+        document.getElementById("l").src = "./images/lp.png";
     }
     else{
-        texto += "No L - ";
+        document.getElementById("l").src = "./images/l.png";
     }
     if(up){
-        texto += "Up - ";
+        document.getElementById("up").src = "./images/dpad-upp.png";
     }
     else{
-        texto += "No Up - ";
+        document.getElementById("up").src = "./images/dpad-up.png";
     }
     if(down){
-        texto += "Down - ";
+        document.getElementById("down").src = "./images/dpad-downp.png";
     }
     else{
-        texto += "No Down - ";
+        document.getElementById("down").src = "./images/dpad-down.png";
     }
     if(left){
-        texto += "Left - ";
+        document.getElementById("left").src = "./images/dpad-leftp.png";
     }
     else{
-        texto += "No Left - ";
+        document.getElementById("left").src = "./images/dpad-left.png";
     }
     if(right){
-        texto += "Right - ";
+        document.getElementById("right").src = "./images/dpad-rightp.png";
     }
     else{
-        texto += "No Right - ";
+        document.getElementById("right").src = "./images/dpad-right.png";
     }
     if(start){
-        texto += "Start - ";
+        document.getElementById("start").src = "./images/startp.png";
     }
     else{
-        texto += "No Start - ";
+        document.getElementById("start").src = "./images/start.png";
     }
     if(select){
-        texto += "Select - ";
+        document.getElementById("select").src = "./images/selectp.png";
     }
     else{
-        texto += "No Select - ";
+        document.getElementById("select").src = "./images/select.png";
     }
 
     //Setea los textos en funcion de los valores
-    document.getElementById("debug").innerHTML = texto;
+    // document.getElementById("debug").innerHTML =  (datos[0] + " " + datos[1] + " " + datos[2] + " " + datos[3]+ " " + datos[4] + " " + datos[5] + " " + datos[6]+ " " + datos[7]+ " " + datos[8] + " " + datos[9]);
 }
